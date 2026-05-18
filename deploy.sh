@@ -60,7 +60,10 @@ sudo nginx -t
 if sudo systemctl is-active --quiet nginx; then
     sudo systemctl reload nginx
 elif pgrep -x nginx >/dev/null; then
-    sudo nginx -s reload
+    sudo nginx -s reload || {
+        sudo pkill nginx
+        sudo systemctl start nginx
+    }
 else
     sudo systemctl start nginx
 fi

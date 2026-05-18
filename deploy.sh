@@ -54,7 +54,12 @@ EOF
 
 # 启用站点
 sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
+sudo nginx -t
+if sudo systemctl is-active --quiet nginx; then
+    sudo systemctl reload nginx
+else
+    sudo systemctl start nginx
+fi
 
 sudo systemctl --no-pager --full status $SERVICE_NAME
 

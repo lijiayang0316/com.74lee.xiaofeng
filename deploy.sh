@@ -1,11 +1,11 @@
 #!/bin/bash
-# 小凤桶装水 - 部署脚本
+# 小风桶装水 - 部署脚本
 
 PROJECT_NAME="com.74lee.xiaofeng"
 PORT=9002
 DOMAIN="xiaofeng.74lee.com"
 
-echo "=== 小凤桶装水部署开始 ==="
+echo "=== 小风桶装水部署开始 ==="
 
 # 安装依赖
 cd ~/Desktop/com.74lee/$PROJECT_NAME
@@ -16,7 +16,7 @@ pm2 stop $PROJECT_NAME 2>/dev/null || true
 pm2 delete $PROJECT_NAME 2>/dev/null || true
 
 # 启动新服务
-pm2 start python3 --name "$PROJECT_NAME" -- serve
+pm2 start python3 --name "$PROJECT_NAME" -- -m gunicorn -b 127.0.0.1:$PORT app:app
 
 # 等待服务启动
 sleep 2

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小凤桶装水 - 桶装水、瓶装水配送服务</title>
+    <title>小风桶装水 - 桶装水、瓶装水配送服务</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root {
@@ -32,9 +32,16 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
         }
         .nav-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { height: 44px; display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo img { height: 100%; width: auto; display: block; }
-        .logo-text { font-size: 1.3rem; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .brand-lockup { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+        .brand-lockup .brand-icon { width: 36px; height: auto; display: block; }
+        .brand-lockup .brand-wordmark { width: 88px; height: auto; display: block; }
+        .hero-brand { margin-bottom: 2rem; }
+        .hero-brand .brand-icon { width: 128px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.3)); }
+        .hero-brand .brand-wordmark { width: 240px; filter: drop-shadow(0 2px 12px rgba(255,255,255,0.28)); }
+        .footer-brand { display: inline-flex; vertical-align: middle; margin-right: 8px; }
+        .footer-brand .brand-icon { width: 34px; }
+        .footer-brand .brand-wordmark { width: 78px; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; transition: all 0.2s; }
         .nav-links a:hover { color: var(--primary); }
@@ -44,14 +51,16 @@
         .hero {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
             padding: 2rem; text-align: center;
-            background: linear-gradient(rgba(10,30,60,0.55), rgba(10,30,60,0.55)), url('/static/images/hero-bg.jpg') center/cover no-repeat;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.84) 0%, rgba(235,248,255,0.72) 48%, rgba(255,255,255,0.94) 100%),
+                url('/static/images/hero-bg.jpg') center/cover no-repeat;
         }
         .hero-content { position: relative; z-index: 1; max-width: 900px; }
         .hero h1 {
             font-size: 4rem; font-weight: 800; margin-bottom: 1.5rem;
-            color: #ffffff;
+            color: #10375c;
         }
-        .hero p { font-size: 1.3rem; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem; line-height: 1.8; }
+        .hero p { font-size: 1.3rem; color: #315f82; margin-bottom: 2.5rem; line-height: 1.8; }
         .hero-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
 
         .btn {
@@ -64,8 +73,8 @@
             box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
         }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4); }
-        .btn-secondary { background: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.7); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        .btn-secondary { background: rgba(255,255,255,0.68); color: var(--primary); border: 2px solid rgba(30,136,229,0.28); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.92); transform: translateY(-2px); }
 
         .features { padding: 8rem 2rem; }
         .section-title { text-align: center; margin-bottom: 4rem; }
@@ -92,14 +101,26 @@
         /* --- 检测报告 (截图 + 点击弹窗预览PDF) --- */
         .report-section { padding: 8rem 2rem; max-width: 1480px; margin: 0 auto; }
         .report-container {
-            display: grid; grid-template-columns: 320px 1fr; gap: 2.5rem;
+            display: block;
             background: var(--bg-card);
             border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 30px; padding: 2.5rem;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
         }
-        .report-left { display: flex; flex-direction: column; justify-content: flex-start; }
+        .report-left { display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 2rem; }
         .report-left h3 { font-size: 1.5rem; margin-bottom: 1.2rem; }
         .report-left p { color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem; font-size: 0.93rem; }
+        .report-summary-grid {
+            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem;
+            margin-top: 1.2rem;
+        }
+        .report-summary-item {
+            padding: 1rem; border-radius: 14px;
+            background: #f8fafc; border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .report-summary-item .value {
+            display: block; font-size: 1.35rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem;
+        }
+        .report-summary-item .label { color: var(--text-dim); font-size: 0.8rem; line-height: 1.5; }
         .report-highlights { list-style: none; margin-bottom: 1.5rem; }
         .report-highlights li {
             padding: 0.8rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.04);
@@ -119,44 +140,64 @@
         }
         .report-meta span { color: var(--primary); font-weight: 600; }
 
-        /* --- 报告截图卡片 (右侧) --- */
+        .report-grid {
+            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem;
+        }
+
+        /* --- 报告截图卡片 --- */
         .report-image-card {
             display: flex; flex-direction: column; align-items: center;
-            border-radius: 20px; overflow: hidden;
+            border-radius: 18px; overflow: hidden;
             background: #f8fafc;
             border: 1px solid rgba(0, 0, 0, 0.06);
             cursor: pointer;
             transition: all 0.2s;
+            min-height: 100%;
         }
         .report-image-card:hover {
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             transform: translateY(-2px);
         }
         .report-image-wrap {
-            width: 100%; padding: 1.5rem 1.5rem 0;
+            width: 100%; padding: 1rem 1rem 0;
             display: flex; justify-content: center;
         }
         .report-image-wrap img {
             width: 100%; height: auto;
-            max-height: 480px;
+            aspect-ratio: 3 / 4;
+            max-height: 300px;
             object-fit: contain;
             display: block;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: #ffffff;
         }
         .report-image-footer {
-            padding: 1.2rem 1.5rem 1.5rem;
-            text-align: center; width: 100%;
+            padding: 1rem;
+            text-align: left; width: 100%; display: flex; flex-direction: column; flex: 1;
+        }
+        .report-card-kicker {
+            color: var(--accent); font-size: 0.74rem; font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+        .report-card-title {
+            font-size: 1rem; line-height: 1.4; min-height: 2.8em;
+            color: var(--text); margin-bottom: 0.6rem;
+        }
+        .report-card-meta {
+            color: var(--text-dim); font-size: 0.78rem; line-height: 1.7;
+            margin-bottom: 1rem;
         }
         .report-preview-btn {
             display: inline-flex; align-items: center; gap: 0.6rem;
-            padding: 0.8rem 2rem;
+            justify-content: center;
+            padding: 0.72rem 1rem;
             border-radius: 50px;
             background: var(--primary);
             color: #ffffff; font-size: 0.95rem; font-weight: 600;
             text-decoration: none; transition: all 0.2s;
             box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
-            border: none; cursor: pointer;
+            border: none; cursor: pointer; width: 100%; margin-top: auto;
         }
         .report-preview-btn:hover {
             transform: translateY(-2px);
@@ -164,7 +205,7 @@
         }
         .report-image-hint {
             font-size: 0.75rem; color: rgba(0, 0, 0, 0.25);
-            margin-top: 0.5rem;
+            margin-top: 0.5rem; text-align: center;
         }
 
         /* --- PDF 全屏预览遮罩 --- */
@@ -270,8 +311,12 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        @media (max-width: 1000px) {
-            .report-container { grid-template-columns: 1fr; }
+        @media (max-width: 1200px) { .report-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 1000px) { .report-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 620px) {
+            .report-container { padding: 1.25rem; border-radius: 20px; }
+            .report-grid { grid-template-columns: 1fr; }
+            .report-summary-grid { grid-template-columns: 1fr; }
         }
 
         /* --- 产品展示 (Masonry 瀑布流) --- */
@@ -482,7 +527,12 @@
 <body>
     <nav>
         <div class="nav-content">
-            <a href="#home" class="logo"><img src="/static/images/小凤桶装水-logo.svg" alt="小凤桶装水"><span class="logo-text">小凤桶装水</span></a>
+            <a href="#home" class="logo" aria-label="小风桶装水">
+                <span class="brand-lockup">
+                    <img class="brand-icon" src="/static/images/小凤桶装水-logo.svg" alt="">
+                    <img class="brand-wordmark" src="/static/images/小风桶装水-文字.svg" alt="小风桶装水">
+                </span>
+            </a>
             <ul class="nav-links">
                 <li><a href="#home">首页</a></li>
                 <li><a href="#features">核心优势</a></li>
@@ -497,7 +547,10 @@
     <main>
         <section class="hero" id="home">
             <div class="hero-content">
-                <div style="margin-bottom:2rem;"><img src="/static/images/小凤桶装水-logo.svg" alt="小凤桶装水" style="width:120px;height:auto;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.3));"></div>
+                <div class="brand-lockup hero-brand">
+                    <img class="brand-icon" src="/static/images/小凤桶装水-logo.svg" alt="">
+                    <img class="brand-wordmark" src="/static/images/小风桶装水-文字.svg" alt="小风桶装水">
+                </div>
                 <h1>桶装水、瓶装水配送服务</h1>
                 <p>北碚区蔡家桶装水配送<br>品质保证，送水到家</p>
                 <div class="hero-buttons">
@@ -553,35 +606,114 @@
             </div>
             <div class="report-container">
                 <div class="report-left">
-                    <h3>重庆仕益产品质量检测认证</h3>
-                    <p>本批次产品经<strong>重庆仕益产品质量检测有限责任公司</strong>全面检测，所有项目均符合国家标准要求。</p>
-                    <ul class="report-highlights">
-                        <li><span class="report-badge">✓</span><div><strong>感官指标</strong> — 无肉眼可见物，无任何异味</div></li>
-                        <li><span class="report-badge">✓</span><div><strong>重金属</strong> — 镉、总砷、铅均未检出</div></li>
-                        <li><span class="report-badge">✓</span><div><strong>微生物</strong> — 大肠菌群 &lt;1，铜绿假单胞菌未检出</div></li>
-                        <li><span class="report-badge">✓</span><div><strong>有机物</strong> — 四氯化碳、三氯甲烷、溴酸盐未检出</div></li>
-                        <li><span class="report-badge">✓</span><div><strong>耗氧量</strong> — 实测 0.83 mg/L，远优于标准值</div></li>
-                    </ul>
-                    <div class="report-meta">
-                        检测机构：<span>重庆仕益产品质量检测</span><br>
-                        检测标准：<span>GB 19298-2014 / GB 2762-2022</span><br>
-                        检测日期：<span>2026.03.15 - 2026.03.24</span><br>
-                        报告编号：<span>SYWTPWD262694</span><br>
-                        结论：<span style="color:var(--accent)">全部 12 项指标合格 ✓</span>
+                    <h3>检测报告分类归档</h3>
+                    <p>已按产品与年份整理 4 份检测报告，覆盖最新批次、新生代、天然泉水、桶装矿泉水等分类。点击对应卡片即可在线预览完整 PDF。</p>
+                    <div class="report-summary-grid">
+                        <div class="report-summary-item">
+                            <span class="value">4</span>
+                            <span class="label">份检测报告</span>
+                        </div>
+                        <div class="report-summary-item">
+                            <span class="value">17</span>
+                            <span class="label">页原始资料</span>
+                        </div>
+                        <div class="report-summary-item">
+                            <span class="value">2025-2026</span>
+                            <span class="label">检测年份覆盖</span>
+                        </div>
+                        <div class="report-summary-item">
+                            <span class="value">PDF</span>
+                            <span class="label">支持在线预览</span>
+                        </div>
                     </div>
                 </div>
-                <div class="report-image-card" id="reportImageCard" onclick="openReportOverlay()">
-                    <div class="report-image-wrap">
-                        <img src="/static/images/报告截图.jpg" alt="检测报告封面" loading="lazy">
+                <div class="report-grid">
+                    <div class="report-image-card" onclick="openReportOverlay('latest')">
+                        <div class="report-image-wrap">
+                            <img src="/static/images/reports/2026-03-latest.jpg" alt="2026年3月最新检测报告" loading="lazy">
+                        </div>
+                        <div class="report-image-footer">
+                            <div class="report-card-kicker">最新批次</div>
+                            <h3 class="report-card-title">2026年3月最新检测报告</h3>
+                            <div class="report-card-meta">
+                                产品：井田冰泉<br>
+                                页数：4 页<br>
+                                报告编号：SYWTPWD262694
+                            </div>
+                            <button class="report-preview-btn" type="button">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                查看报告
+                            </button>
+                            <div class="report-image-hint">点击预览完整 PDF</div>
+                        </div>
                     </div>
-                    <div class="report-image-footer">
-                        <button class="report-preview-btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            查看详细报告
-                        </button>
-                        <div class="report-image-hint">点击预览完整 2 页报告</div>
+
+                    <div class="report-image-card" onclick="openReportOverlay('xinshengdai')">
+                        <div class="report-image-wrap">
+                            <img src="/static/images/reports/2025-xinshengdai.jpg" alt="2025年新生代检测报告" loading="lazy">
+                        </div>
+                        <div class="report-image-footer">
+                            <div class="report-card-kicker">新生代系列</div>
+                            <h3 class="report-card-title">2025年新生代检测报告</h3>
+                            <div class="report-card-meta">
+                                分类：新生代<br>
+                                页数：4 页<br>
+                                格式：扫描版 PDF
+                            </div>
+                            <button class="report-preview-btn" type="button">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                查看报告
+                            </button>
+                            <div class="report-image-hint">点击预览完整 PDF</div>
+                        </div>
+                    </div>
+
+                    <div class="report-image-card" onclick="openReportOverlay('tianran')">
+                        <div class="report-image-wrap">
+                            <img src="/static/images/reports/2025-tianran-quanshui.jpg" alt="2025桶装水天然泉水检测报告" loading="lazy">
+                        </div>
+                        <div class="report-image-footer">
+                            <div class="report-card-kicker">天然泉水</div>
+                            <h3 class="report-card-title">2025桶装水天然泉水检测报告</h3>
+                            <div class="report-card-meta">
+                                分类：桶装水天然泉水<br>
+                                页数：4 页<br>
+                                格式：扫描版 PDF
+                            </div>
+                            <button class="report-preview-btn" type="button">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                查看报告
+                            </button>
+                            <div class="report-image-hint">点击预览完整 PDF</div>
+                        </div>
+                    </div>
+
+                    <div class="report-image-card" onclick="openReportOverlay('kuangquan')">
+                        <div class="report-image-wrap">
+                            <img src="/static/images/reports/2025-tongzhuang-kuangquanshui.jpg" alt="2025年桶装矿泉水检测报告" loading="lazy">
+                        </div>
+                        <div class="report-image-footer">
+                            <div class="report-card-kicker">桶装矿泉水</div>
+                            <h3 class="report-card-title">2025年桶装矿泉水检测报告</h3>
+                            <div class="report-card-meta">
+                                分类：桶装矿泉水<br>
+                                页数：5 页<br>
+                                格式：扫描版 PDF
+                            </div>
+                            <button class="report-preview-btn" type="button">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                查看报告
+                            </button>
+                            <div class="report-image-hint">点击预览完整 PDF</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -590,7 +722,7 @@
         <!-- PDF 全屏预览遮罩 -->
         <div class="report-overlay" id="reportOverlay">
             <div class="report-overlay-header">
-                <div class="report-overlay-title">📄 小凤桶装水检测报告</div>
+                <div class="report-overlay-title" id="reportOverlayTitle">📄 小风桶装水检测报告</div>
                 <button class="report-overlay-close" onclick="closeReportOverlay()">✕</button>
             </div>
             <div class="report-overlay-body">
@@ -628,12 +760,11 @@
                 </div>
                 <div class="gallery-nav">
                     <button class="gallery-nav-btn active" data-filter="all">全部</button>
-                    <button class="gallery-nav-btn" data-filter="kuangwuzhi">矿物质水</button>
-                    <button class="gallery-nav-btn" data-filter="tianran">天然水</button>
-                    <button class="gallery-nav-btn" data-filter="chunjing">纯净水</button>
-                    <button class="gallery-nav-btn" data-filter="baozhuang">包装饮用水</button>
+                    <button class="gallery-nav-btn" data-filter="tongzhuang">桶装水</button>
+                    <button class="gallery-nav-btn" data-filter="yicixing">一次性桶装水</button>
                     <button class="gallery-nav-btn" data-filter="pingzhuang">瓶装水</button>
-                    <button class="gallery-nav-btn" data-filter="yinliao">饮料</button>
+                    <button class="gallery-nav-btn" data-filter="yinpin">饮品茶饮</button>
+                    <button class="gallery-nav-btn" data-filter="yingershui">婴儿水</button>
                 </div>
                 <div class="gallery-grid" id="galleryGrid"></div>
         </section>
@@ -713,8 +844,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4><img src="/static/images/小凤桶装水-logo.svg" alt="小凤桶装水" style="height:36px;vertical-align:middle;margin-right:8px;">关于小凤</h4>
-                <p>小凤桶装水经营部，专注为北碚区蔡家片区居民提供桶装水配送服务。</p>
+                <h4><span class="brand-lockup footer-brand"><img class="brand-icon" src="/static/images/小凤桶装水-logo.svg" alt=""><img class="brand-wordmark" src="/static/images/小风桶装水-文字.svg" alt="小风桶装水"></span>关于小风</h4>
+                <p>小风桶装水经营部，专注为北碚区蔡家片区居民提供桶装水配送服务。</p>
             </div>
             <div class="footer-section">
                 <h4>联系我们</h4>
@@ -735,7 +866,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 小凤桶装水经营部 版权所有</p>
+            <p>&copy; 2026 小风桶装水经营部 版权所有</p>
         </div>
     </footer>
 
@@ -752,41 +883,55 @@
     <script>
         // Gallery images data
         const galleryImages = [
-            {src:'/static/images/gallery/2026-05-18-产品实拍.jpg',date:'2026-05-18',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-05-18-产品PDF.png',date:'2026-05-18',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-090134-891.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-090237-038.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-090311-771.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-090348-886.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-092114-497.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-092153-221.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-092232-918.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-06-092248-992.png',date:'2026-03-06',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-094341-815.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-094817-058.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-094949-728.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095130-486.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095148-482.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095232-952.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095247-209.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095315-539.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095359-592.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095422-129.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095437-644.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095536-639.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095556-159.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095622-439.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095651-610.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095730-025.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095826-218.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095903-953.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-095925-818.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-100029-991.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-100213-491.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-100224-143.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-100249-098.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-100430-873.png',date:'2026-03-10',cat:'chunjing'},
-            {src:'/static/images/gallery/2026-03-10-100500-321.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/bucket-01-screenshot-2026-03-06-090134-891.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-02-screenshot-2026-03-06-090237-038.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-03-screenshot-2026-03-06-090311-771.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-04-screenshot-2026-03-06-090348-886.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-05-screenshot-2026-03-06-092114-497.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-06-screenshot-2026-03-06-092153-221.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-07-screenshot-2026-03-06-092232-918.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-08-screenshot-2026-03-06-092248-992.png',date:'2026-03-06',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-09-screenshot-2026-03-10-094341-815.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-10-screenshot-2026-03-10-094817-058.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-11-screenshot-2026-03-10-094949-728.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-12-screenshot-2026-03-10-095130-486.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-13-screenshot-2026-03-10-095148-482.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-14-screenshot-2026-03-10-095232-952.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-15-screenshot-2026-03-10-095247-209.png',date:'2026-03-10',cat:'yicixing'},
+            {src:'/static/images/gallery/bucket-16-screenshot-2026-03-10-095315-539.png',date:'2026-03-10',cat:'yicixing'},
+            {src:'/static/images/gallery/bucket-17-screenshot-2026-03-10-095359-592.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-18-screenshot-2026-03-10-095422-129.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-19-screenshot-2026-03-10-095437-644.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-20-screenshot-2026-03-10-095536-639.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-21-screenshot-2026-03-10-095556-159.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-22-screenshot-2026-03-10-095622-439.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-23-screenshot-2026-03-10-095651-610.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-24-screenshot-2026-03-10-095730-025.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-25-screenshot-2026-03-10-095826-218.png',date:'2026-03-10',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bucket-26-screenshot-2026-03-10-095903-953.png',date:'2026-03-10',cat:'yicixing'},
+            {src:'/static/images/gallery/bucket-27-screenshot-2026-03-10-095925-818.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-28-screenshot-2026-03-10-100029-991.png',date:'2026-03-10',cat:'yinpin'},
+            {src:'/static/images/gallery/bucket-29-screenshot-2026-03-10-100213-491.png',date:'2026-03-10',cat:'yinpin'},
+            {src:'/static/images/gallery/bucket-30-screenshot-2026-03-10-100224-143.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-31-screenshot-2026-03-10-100249-098.png',date:'2026-03-10',cat:'yicixing'},
+            {src:'/static/images/gallery/bucket-32-screenshot-2026-03-10-100430-873.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bucket-33-screenshot-2026-03-10-100500-321.png',date:'2026-03-10',cat:'tongzhuang'},
+            {src:'/static/images/gallery/bottle-01-12f0658068658542392d38368c8727b1.png',date:'2026-05-18',cat:'yicixing'},
+            {src:'/static/images/gallery/bottle-02-25141f9ebe7e15c362bd097402363b56.png',date:'2026-05-18',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bottle-03-2c0d55729d7fdfc22ad72da2de4f4f23.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-04-2feed8064c372a038f247320c948ef07.jpg',date:'2026-05-18',cat:'yicixing'},
+            {src:'/static/images/gallery/bottle-05-54e9bef225a5c49a70967e5bc82eccb4.png',date:'2026-05-18',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bottle-06-7a03e6734e5f89f559e10acf750698c7.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-07-83a4fb7e5e9d30142f1a18f3613a62f2.jpg',date:'2026-05-18',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bottle-08-88cbf7433847401e7c40381613b21249.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-09-95561eaad501b09463ffd1e1140131f6.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-10-9c6625d39717869c1ce8aa8c1cd83b9b.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-11-bf2b97190c73cd4be4eca5a4117956f7.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-12-c31ecf404d141300f7907aea9ce1c966.jpg',date:'2026-05-18',cat:'yinpin'},
+            {src:'/static/images/gallery/bottle-13-c404093a30947ae76513a332ec2db5a1.jpg',date:'2026-05-18',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bottle-14-d0b9f7e8ac3775e4f810e12c8abd8023.png',date:'2026-05-18',cat:'pingzhuang'},
+            {src:'/static/images/gallery/bottle-15-e19a351a0b5c7e2918f039a95690d173.jpg',date:'2026-05-18',cat:'yingershui'},
+            {src:'/static/images/gallery/bottle-16-ed5f89460fc3b9074fa52c3c9095e9c4.png',date:'2026-05-18',cat:'pingzhuang'},
         ];
 
         let filteredImages = [...galleryImages];
@@ -796,12 +941,11 @@
             const container = document.getElementById('galleryGrid');
             const activeFilter = document.querySelector('.gallery-nav-btn.active').dataset.filter;
             const catNames = {
-                'kuangwuzhi': '矿物质水',
-                'tianran': '天然水',
-                'chunjing': '纯净水',
-                'baozhuang': '包装饮用水',
+                'tongzhuang': '桶装水',
+                'yicixing': '一次性桶装水',
                 'pingzhuang': '瓶装水',
-                'yinliao': '饮料'
+                'yinpin': '饮品茶饮',
+                'yingershui': '婴儿水'
             };
 
             if (images.length === 0) {
@@ -892,16 +1036,37 @@
         /* ========== PDF.js 在线查看器 ========== */
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        let pdfViewerLoaded = false;
+        const qualityReports = {
+            latest: {
+                title: '2026年3月最新检测报告',
+                url: '/static/pdf/reports/2026-03-latest.pdf'
+            },
+            xinshengdai: {
+                title: '2025年新生代检测报告',
+                url: '/static/pdf/reports/2025-xinshengdai.pdf'
+            },
+            tianran: {
+                title: '2025桶装水天然泉水检测报告',
+                url: '/static/pdf/reports/2025-tianran-quanshui.pdf'
+            },
+            kuangquan: {
+                title: '2025年桶装矿泉水检测报告',
+                url: '/static/pdf/reports/2025-tongzhuang-kuangquanshui.pdf'
+            }
+        };
+
+        let pdfControlsReady = false;
         let pdfDoc = null;
         let pdfCurrentPage = 1;
         let pdfScale = 1.2;
+        let pdfRenderTask = null;
+        let activeReportKey = 'latest';
 
-        function createPdfViewer() {
-            if (pdfViewerLoaded) return;
-            pdfViewerLoaded = true;
+        function createPdfViewer(reportKey) {
+            const report = qualityReports[reportKey] || qualityReports.latest;
+            activeReportKey = reportKey || 'latest';
+            document.getElementById('reportOverlayTitle').textContent = '📄 ' + report.title;
 
-            const pdfUrl = '/static/pdf/小凤桶装水检测报告.pdf';
             const canvas = document.getElementById('pdfCanvas');
             const ctx = canvas.getContext('2d');
             const loading = document.getElementById('pdfLoading');
@@ -915,6 +1080,18 @@
             const zoomLabel = document.getElementById('pdfZoomLabel');
             const fitBtn = document.getElementById('pdfFitPage');
             const wrap = document.getElementById('pdfCanvasWrap');
+
+            pdfDoc = null;
+            pdfCurrentPage = 1;
+            pdfScale = 1.2;
+            canvas.style.display = 'none';
+            loading.style.display = 'flex';
+            loading.innerHTML = '<div class="spinner"></div><span>正在加载报告…</span>';
+            pageInput.value = 1;
+            pageCount.textContent = '—';
+            zoomLabel.textContent = '100%';
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
 
             function calcFitScale(page) {
                 const wrapW = wrap.clientWidth - 48;
@@ -931,7 +1108,20 @@
                     canvas.height = viewport.height;
                     canvas.style.display = 'block';
                     loading.style.display = 'none';
-                    pg.render({ canvasContext: ctx, viewport: viewport });
+                    if (pdfRenderTask) {
+                        pdfRenderTask.cancel();
+                    }
+                    pdfRenderTask = pg.render({ canvasContext: ctx, viewport: viewport });
+                    const thisRenderTask = pdfRenderTask;
+                    pdfRenderTask.promise.then(function() {
+                        if (pdfRenderTask === thisRenderTask) {
+                            pdfRenderTask = null;
+                        }
+                    }).catch(function(err) {
+                        if (err && err.name !== 'RenderingCancelledException') {
+                            loading.innerHTML = '<span style="color:rgba(255,100,100,0.7)">❌ 页面渲染失败，请重试</span>';
+                        }
+                    });
                     pageInput.value = pdfCurrentPage;
                     prevBtn.disabled = pdfCurrentPage <= 1;
                     nextBtn.disabled = pdfCurrentPage >= pdfDoc.numPages;
@@ -951,48 +1141,53 @@
                 renderPage();
             }
 
-            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+            pdfjsLib.getDocument(report.url).promise.then(function(pdf) {
                 pdfDoc = pdf;
                 pageCount.textContent = pdf.numPages;
-                pdfScale = calcFitScale(pdf.getPage(1));
-                zoomLabel.textContent = Math.round(pdfScale * 100) + '%';
-                renderPage();
-            }).catch(function() {
-                loading.innerHTML = '<span style="color:rgba(255,100,100,0.7)">❌ 报告加载失败，请重试</span>';
-            });
-
-            prevBtn.addEventListener('click', () => goToPage(pdfCurrentPage - 1));
-            nextBtn.addEventListener('click', () => goToPage(pdfCurrentPage + 1));
-            pageInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    const n = parseInt(this.value);
-                    if (!isNaN(n)) goToPage(n);
-                    else this.value = pdfCurrentPage;
-                }
-            });
-            zoomIn.addEventListener('click', () => changeZoom(0.2));
-            zoomOut.addEventListener('click', () => changeZoom(-0.2));
-            fitBtn.addEventListener('click', function() {
-                if (!pdfDoc) return;
-                pdfDoc.getPage(pdfCurrentPage).then(function(pg) {
+                pdf.getPage(1).then(function(pg) {
                     pdfScale = calcFitScale(pg);
                     zoomLabel.textContent = Math.round(pdfScale * 100) + '%';
                     renderPage();
                 });
+            }).catch(function() {
+                loading.innerHTML = '<span style="color:rgba(255,100,100,0.7)">❌ 报告加载失败，请重试</span>';
             });
-            wrap.addEventListener('wheel', function(e) {
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    changeZoom(e.deltaY > 0 ? -0.15 : 0.15);
-                }
-            });
+
+            if (!pdfControlsReady) {
+                pdfControlsReady = true;
+                prevBtn.addEventListener('click', () => goToPage(pdfCurrentPage - 1));
+                nextBtn.addEventListener('click', () => goToPage(pdfCurrentPage + 1));
+                pageInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        const n = parseInt(this.value);
+                        if (!isNaN(n)) goToPage(n);
+                        else this.value = pdfCurrentPage;
+                    }
+                });
+                zoomIn.addEventListener('click', () => changeZoom(0.2));
+                zoomOut.addEventListener('click', () => changeZoom(-0.2));
+                fitBtn.addEventListener('click', function() {
+                    if (!pdfDoc) return;
+                    pdfDoc.getPage(pdfCurrentPage).then(function(pg) {
+                        pdfScale = calcFitScale(pg);
+                        zoomLabel.textContent = Math.round(pdfScale * 100) + '%';
+                        renderPage();
+                    });
+                });
+                wrap.addEventListener('wheel', function(e) {
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        changeZoom(e.deltaY > 0 ? -0.15 : 0.15);
+                    }
+                });
+            }
         }
 
-        function openReportOverlay() {
+        function openReportOverlay(reportKey = activeReportKey) {
             const overlay = document.getElementById('reportOverlay');
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            createPdfViewer();
+            createPdfViewer(reportKey);
         }
 
         function closeReportOverlay() {

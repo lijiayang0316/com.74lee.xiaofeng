@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小凤桶装水 - 桶装水、瓶装水配送服务</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        :root {
+            --primary: #1e88e5;
+            --secondary: #1565c0;
+            --accent: #0ea5e9;
+            --bg-light: #ffffff;
+            --bg-card: #ffffff;
+            --text: #1a1a2e;
+            --text-dim: #6b7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+        .nav-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { height: 44px; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo img { height: 100%; width: auto; display: block; }
+        .logo-text { font-size: 1.3rem; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; transition: all 0.2s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        main { position: relative; z-index: 1; }
+
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 2rem; text-align: center;
+            background: linear-gradient(rgba(10,30,60,0.55), rgba(10,30,60,0.55)), url('/static/images/hero-bg.jpg') center/cover no-repeat;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+        .hero h1 {
+            font-size: 4rem; font-weight: 800; margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+        .hero p { font-size: 1.3rem; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem; line-height: 1.8; }
+        .hero-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn {
+            padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;
+            text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4); }
+        .btn-secondary { background: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.7); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+
+        .features { padding: 8rem 2rem; }
+        .section-title { text-align: center; margin-bottom: 4rem; }
+        .section-title h2 {
+            font-size: 2.8rem; margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .section-title p { color: var(--text-dim); font-size: 1.1rem; }
+        .features-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 20px; padding: 2.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s;
+        }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); }
+        .feature-icon { width: 80px; height: 80px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 2rem; color: #fff; }
+        .feature-card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+        .feature-card p { color: var(--text-dim); line-height: 1.7; }
+
+
+
+        /* --- 检测报告 (截图 + 点击弹窗预览PDF) --- */
+        .report-section { padding: 8rem 2rem; max-width: 1480px; margin: 0 auto; }
+        .report-container {
+            display: grid; grid-template-columns: 320px 1fr; gap: 2.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 30px; padding: 2.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+        .report-left { display: flex; flex-direction: column; justify-content: flex-start; }
+        .report-left h3 { font-size: 1.5rem; margin-bottom: 1.2rem; }
+        .report-left p { color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem; font-size: 0.93rem; }
+        .report-highlights { list-style: none; margin-bottom: 1.5rem; }
+        .report-highlights li {
+            padding: 0.8rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; color: var(--text);
+        }
+        .report-highlights li:last-child { border-bottom: none; }
+        .report-badge {
+            flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.3);
+            font-size: 0.7rem; color: var(--accent); margin-top: 2px;
+        }
+        .report-meta {
+            padding: 1rem; border-radius: 12px;
+            background: #f8fafc; border: 1px solid rgba(0, 0, 0, 0.04);
+            font-size: 0.82rem; color: var(--text-dim); line-height: 1.9;
+        }
+        .report-meta span { color: var(--primary); font-weight: 600; }
+
+        /* --- 报告截图卡片 (右侧) --- */
+        .report-image-card {
+            display: flex; flex-direction: column; align-items: center;
+            border-radius: 20px; overflow: hidden;
+            background: #f8fafc;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .report-image-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        .report-image-wrap {
+            width: 100%; padding: 1.5rem 1.5rem 0;
+            display: flex; justify-content: center;
+        }
+        .report-image-wrap img {
+            width: 100%; height: auto;
+            max-height: 480px;
+            object-fit: contain;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        .report-image-footer {
+            padding: 1.2rem 1.5rem 1.5rem;
+            text-align: center; width: 100%;
+        }
+        .report-preview-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            background: var(--primary);
+            color: #ffffff; font-size: 0.95rem; font-weight: 600;
+            text-decoration: none; transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
+            border: none; cursor: pointer;
+        }
+        .report-preview-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
+        }
+        .report-image-hint {
+            font-size: 0.75rem; color: rgba(0, 0, 0, 0.25);
+            margin-top: 0.5rem;
+        }
+
+        /* --- PDF 全屏预览遮罩 --- */
+        .report-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 25, 40, 0.95); z-index: 9998;
+            flex-direction: column;
+        }
+        .report-overlay.active { display: flex; }
+        .report-overlay-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.7rem 1.2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+        .report-overlay-title {
+            font-size: 0.9rem; font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .report-overlay-close {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff; font-size: 1.1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s;
+        }
+        .report-overlay-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(90deg);
+        }
+        .report-overlay-body {
+            flex: 1; display: flex; flex-direction: column; min-height: 0;
+        }
+        /* PDF 工具栏 (在遮罩内) */
+        .pdf-toolbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.5rem 1.2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+        .pdf-toolbar-left, .pdf-toolbar-right {
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .pdf-page-nav { display: flex; align-items: center; gap: 0.35rem; }
+        .pdf-page-nav button {
+            width: 30px; height: 30px; border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .pdf-page-nav button:hover { background: rgba(255, 255, 255, 0.14); }
+        .pdf-page-nav button:disabled { opacity: 0.3; cursor: default; }
+        .pdf-page-input {
+            width: 40px; height: 30px; text-align: center;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 6px; color: #fff; font-size: 0.8rem;
+            outline: none;
+        }
+        .pdf-page-input:focus { border-color: #60a5fa; }
+        .pdf-page-total { font-size: 0.8rem; color: rgba(255, 255, 255, 0.45); }
+        .pdf-zoom-btn {
+            width: 30px; height: 30px; border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.8); font-size: 0.85rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .pdf-zoom-btn:hover { background: rgba(255, 255, 255, 0.14); }
+        .pdf-zoom-label { font-size: 0.75rem; color: rgba(255, 255, 255, 0.45); min-width: 34px; text-align: center; }
+        .pdf-fit-btn {
+            padding: 0.2rem 0.6rem; border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.55); font-size: 0.7rem; cursor: pointer;
+        }
+        .pdf-fit-btn:hover { background: rgba(255, 255, 255, 0.12); }
+        .pdf-canvas-wrap {
+            flex: 1; overflow: auto;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: 1.5rem;
+            background: #1a1f2e;
+        }
+        .pdf-canvas-wrap canvas {
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+            border-radius: 3px;
+        }
+        .pdf-loading {
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 1rem; color: rgba(255, 255, 255, 0.4);
+            padding: 4rem; font-size: 0.9rem;
+        }
+        .pdf-loading .spinner {
+            width: 32px; height: 32px; border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #60a5fa; border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 1000px) {
+            .report-container { grid-template-columns: 1fr; }
+        }
+
+        /* --- 产品展示 (Masonry 瀑布流) --- */
+        .gallery-section { padding: 4rem 2rem 8rem; max-width: 1600px; margin: 0 auto; }
+        .gallery-nav {
+            display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .gallery-nav-btn {
+            padding: 0.45rem 1.1rem; border-radius: 50px; font-size: 0.82rem;
+            background: transparent; border: 1px solid rgba(0,0,0,0.1); color: var(--text-dim);
+            cursor: pointer; transition: all 0.2s; font-weight: 500;
+        }
+        .gallery-nav-btn:hover, .gallery-nav-btn.active {
+            background: var(--primary); border-color: var(--primary); color: #fff;
+        }
+        /* 大图相册网格 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+        .gallery-item {
+            position: relative; border-radius: 16px; overflow: hidden; cursor: pointer;
+            transition: all 0.35s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+        .gallery-item img {
+            width: 100%; height: auto; display: block;
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover img { transform: scale(1.06); }
+        .gallery-item .img-index {
+            position: absolute; top: 10px; left: 10px;
+            width: 26px; height: 26px; border-radius: 50%;
+            background: rgba(255,255,255,0.85); color: #333;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; opacity: 0;
+            transition: opacity 0.25s; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .gallery-item:hover .img-index { opacity: 1; }
+        @media (max-width: 1200px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .gallery-grid { grid-template-columns: 1fr; gap: 1rem; } }
+        /* Lightbox */
+        .lightbox {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.92); z-index: 9999; justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox-img-wrap {
+            position: relative; max-width: 92vw; max-height: 92vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lightbox-img-wrap img {
+            max-width: 90vw; max-height: 88vh; object-fit: contain;
+            border-radius: 12px; box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+        }
+        .lightbox-counter {
+            position: absolute; bottom: -2.5rem; left: 50%; transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; letter-spacing: 1px;
+        }
+        .lightbox-close {
+            position: absolute; top: 18px; right: 24px;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; color: #fff;
+            cursor: pointer; transition: all 0.2s; z-index: 10;
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: rotate(90deg);
+        }
+        .lightbox-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: rgba(255, 255, 255, 0.7);
+            cursor: pointer; transition: all 0.2s; z-index: 10;
+        }
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .lightbox-prev { left: 24px; }
+        .lightbox-next { right: 24px; }
+        @media (max-width: 768px) {
+            .lightbox-nav { width: 36px; height: 36px; font-size: 1.3rem; }
+            .lightbox-close { width: 36px; height: 36px; font-size: 1.1rem; top: 14px; right: 14px; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+        }
+        .lightbox .lightbox-close { font-family: system-ui; }
+
+        .order-section { padding: 8rem 2rem; }
+        .order-container { max-width: 720px; margin: 0 auto; }
+        .order-phone-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 30px;
+            padding: 3.5rem 3rem; text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+        .order-phone {
+            display: flex; align-items: center; justify-content: center; gap: 2rem;
+            margin: 2.5rem 0;
+        }
+        .order-phone-icon {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: #e3f2fd;
+            border: 2px solid #bbdefb;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .order-phone-icon svg { width: 40px; height: 40px; }
+        .order-phone-number {
+            font-size: 2.8rem; font-weight: 800; letter-spacing: 2px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .order-phone-number:hover { opacity: 0.8; }
+        .order-phone-desc {
+            color: var(--text-dim); font-size: 1.1rem; line-height: 1.8;
+            max-width: 480px; margin: 0 auto 2rem;
+        }
+        .order-phone-info {
+            display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .order-phone-info-item {
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            text-align: center; min-width: 140px;
+        }
+        .order-phone-info-item .label {
+            font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem;
+        }
+        .order-phone-info-item .value {
+            font-size: 1.2rem; font-weight: 600; color: var(--text);
+        }
+        .order-phone-info-item .value.highlight { color: var(--primary); }
+        .order-call-btn {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            padding: 1.2rem 3.5rem; border-radius: 60px;
+            background: var(--primary);
+            color: #ffffff; font-size: 1.3rem; font-weight: 700;
+            text-decoration: none; transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
+        }
+        .order-call-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
+        }
+        @media (max-width: 600px) {
+            .order-phone { flex-direction: column; gap: 1rem; }
+            .order-phone-number { font-size: 2rem; }
+            .order-phone-card { padding: 2.5rem 1.5rem; }
+            .order-phone-info { gap: 0.8rem; }
+            .order-phone-info-item { min-width: 120px; padding: 1rem 1.2rem; }
+            .order-call-btn { padding: 1rem 2rem; font-size: 1.1rem; width: 100%; justify-content: center; }
+        }
+
+        .delivery { padding: 8rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .delivery-card {
+            text-align: center; padding: 2.5rem; background: var(--bg-card);
+            border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s;
+        }
+        .delivery-card:hover { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); transform: translateY(-2px); }
+        .delivery-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+        .delivery-card h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+        .delivery-card p { color: var(--text-dim); line-height: 1.7; }
+
+        footer {
+            padding: 4rem 2rem 2rem; background: #f8fafc;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
+        .footer-section h4 { font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--primary); }
+        .footer-section p, .footer-section a { color: var(--text-dim); line-height: 2; text-decoration: none; display: block; }
+        .footer-section a:hover { color: var(--primary); }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.04); color: var(--text-dim); font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .nav-links { display: none; }
+            .section-title h2 { font-size: 2rem; }
+
+            .order-form { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="#home" class="logo"><img src="/static/images/小凤桶装水-logo.svg" alt="小凤桶装水"><span class="logo-text">小凤桶装水</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">核心优势</a></li>
+                <li><a href="#report">检测报告</a></li>
+                <li><a href="#gallery">产品展示</a></li>
+                <li><a href="#order">电话订购</a></li>
+                <li><a href="#delivery">配送服务</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div style="margin-bottom:2rem;"><img src="/static/images/小凤桶装水-logo.svg" alt="小凤桶装水" style="width:120px;height:auto;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.3));"></div>
+                <h1>桶装水、瓶装水配送服务</h1>
+                <p>北碚区蔡家桶装水配送<br>品质保证，送水到家</p>
+                <div class="hero-buttons">
+                    <a href="tel:15703070844" class="btn btn-primary">📞 立即订购</a>
+                    <a href="#report" class="btn btn-secondary">查看报告</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="section-title">
+                <h2>为什么选择我们</h2>
+                <p>专业、纯净、健康、安心</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>16级净化系统</h3>
+                    <p>采用国际先进RO反渗透技术，经过16道严格净化工艺，去除99.9%的杂质和有害物质</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>权威检测认证</h3>
+                    <p>每批次产品均经过国家级检测机构认证，各项指标均优于国家饮用水标准</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>急速配送到家</h3>
+                    <p>全城2小时极速配送，早8点至晚8点随时响应，让您享受便捷的饮水服务</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>本地服务</h3>
+                    <p>专注北碚区蔡家片区，配送及时，服务贴心</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>环保可追溯</h3>
+                    <p>采用食品级PC材质桶身，空桶循环利用，每一滴水都可追溯源头</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>矿物质平衡</h3>
+                    <p>科学配比，保留人体所需的钙、镁、钾等天然矿物质，口感清甜甘冽</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="report-section" id="report">
+            <div class="section-title">
+                <h2>质量检测报告</h2>
+                <p>权威机构检测认证，品质看得见</p>
+            </div>
+            <div class="report-container">
+                <div class="report-left">
+                    <h3>重庆仕益产品质量检测认证</h3>
+                    <p>本批次产品经<strong>重庆仕益产品质量检测有限责任公司</strong>全面检测，所有项目均符合国家标准要求。</p>
+                    <ul class="report-highlights">
+                        <li><span class="report-badge">✓</span><div><strong>感官指标</strong> — 无肉眼可见物，无任何异味</div></li>
+                        <li><span class="report-badge">✓</span><div><strong>重金属</strong> — 镉、总砷、铅均未检出</div></li>
+                        <li><span class="report-badge">✓</span><div><strong>微生物</strong> — 大肠菌群 &lt;1，铜绿假单胞菌未检出</div></li>
+                        <li><span class="report-badge">✓</span><div><strong>有机物</strong> — 四氯化碳、三氯甲烷、溴酸盐未检出</div></li>
+                        <li><span class="report-badge">✓</span><div><strong>耗氧量</strong> — 实测 0.83 mg/L，远优于标准值</div></li>
+                    </ul>
+                    <div class="report-meta">
+                        检测机构：<span>重庆仕益产品质量检测</span><br>
+                        检测标准：<span>GB 19298-2014 / GB 2762-2022</span><br>
+                        检测日期：<span>2026.03.15 - 2026.03.24</span><br>
+                        报告编号：<span>SYWTPWD262694</span><br>
+                        结论：<span style="color:var(--accent)">全部 12 项指标合格 ✓</span>
+                    </div>
+                </div>
+                <div class="report-image-card" id="reportImageCard" onclick="openReportOverlay()">
+                    <div class="report-image-wrap">
+                        <img src="/static/images/报告截图.jpg" alt="检测报告封面" loading="lazy">
+                    </div>
+                    <div class="report-image-footer">
+                        <button class="report-preview-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            查看详细报告
+                        </button>
+                        <div class="report-image-hint">点击预览完整 2 页报告</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PDF 全屏预览遮罩 -->
+        <div class="report-overlay" id="reportOverlay">
+            <div class="report-overlay-header">
+                <div class="report-overlay-title">📄 小凤桶装水检测报告</div>
+                <button class="report-overlay-close" onclick="closeReportOverlay()">✕</button>
+            </div>
+            <div class="report-overlay-body">
+                <div class="pdf-toolbar">
+                    <div class="pdf-toolbar-left">
+                        <div class="pdf-page-nav">
+                            <button id="pdfPrev" title="上一页">‹</button>
+                            <input type="text" class="pdf-page-input" id="pdfPageInput" value="1">
+                            <span class="pdf-page-total">/ <span id="pdfPageCount">—</span></span>
+                            <button id="pdfNext" title="下一页">›</button>
+                        </div>
+                    </div>
+                    <div class="pdf-toolbar-right">
+                        <button class="pdf-zoom-btn" id="pdfZoomOut" title="缩小">−</button>
+                        <span class="pdf-zoom-label" id="pdfZoomLabel">100%</span>
+                        <button class="pdf-zoom-btn" id="pdfZoomIn" title="放大">+</button>
+                        <span style="color:rgba(255,255,255,0.15)">|</span>
+                        <button class="pdf-fit-btn" id="pdfFitPage">适应页面</button>
+                    </div>
+                </div>
+                <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
+                    <div class="pdf-loading" id="pdfLoading">
+                        <div class="spinner"></div>
+                        <span>正在加载报告…</span>
+                    </div>
+                    <canvas id="pdfCanvas" style="display:none"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <section class="gallery-section" id="gallery">
+                <div class="section-title">
+                    <h2>产品展示</h2>
+                    <p>产品实拍，品质看得见</p>
+                </div>
+                <div class="gallery-nav">
+                    <button class="gallery-nav-btn active" data-filter="all">全部</button>
+                    <button class="gallery-nav-btn" data-filter="kuangwuzhi">矿物质水</button>
+                    <button class="gallery-nav-btn" data-filter="tianran">天然水</button>
+                    <button class="gallery-nav-btn" data-filter="chunjing">纯净水</button>
+                    <button class="gallery-nav-btn" data-filter="baozhuang">包装饮用水</button>
+                    <button class="gallery-nav-btn" data-filter="pingzhuang">瓶装水</button>
+                    <button class="gallery-nav-btn" data-filter="yinliao">饮料</button>
+                </div>
+                <div class="gallery-grid" id="galleryGrid"></div>
+        </section>
+
+        <section class="order-section" id="order">
+            <div class="order-container">
+                <div class="section-title">
+                    <h2>电话订购</h2>
+                    <p>拨打电话，直接下单，送水到家</p>
+                </div>
+                <div class="order-phone-card">
+                    <div class="order-phone">
+                        <div class="order-phone-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#1e88e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                        </div>
+                        <a href="tel:15703070844" class="order-phone-number">157-0307-0844</a>
+                    </div>
+                    <p class="order-phone-desc">
+                        无需填表，直接拨打订购热线，告知您的地址和需求，<strong>2小时内送水到家</strong>
+                    </p>
+                    <a href="tel:15703070844" class="order-call-btn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        立即拨打电话
+                    </a>
+                    <div class="order-phone-info">
+                        <div class="order-phone-info-item">
+                            <div class="label">服务时间</div>
+                            <div class="value highlight">8:00 - 20:00</div>
+                        </div>
+                        <div class="order-phone-info-item">
+                            <div class="label">配送范围</div>
+                            <div class="value">北碚区蔡家</div>
+                        </div>
+                        <div class="order-phone-info-item">
+                            <div class="label">配送时效</div>
+                            <div class="value highlight">2小时达</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="delivery" id="delivery">
+            <div class="section-title">
+                <h2>配送服务</h2>
+                <p>专业配送团队，守护每一滴纯净</p>
+            </div>
+            <div class="delivery-grid">
+                <div class="delivery-card">
+                    <div class="delivery-icon">⏰</div>
+                    <h3>配送时间</h3>
+                    <p>每日 8:00 - 20:00<br>全城2小时极速达</p>
+                </div>
+                <div class="delivery-card">
+                    <div class="delivery-icon">📍</div>
+                    <h3>配送范围</h3>
+                    <p>北碚区蔡家片区<br>详细请电话咨询</p>
+                </div>
+                <div class="delivery-card">
+                    <div class="delivery-icon">🚚</div>
+                    <h3>配送政策</h3>
+                    <p>订单满额免费配送<br>具体详情咨询客服</p>
+                </div>
+                <div class="delivery-card">
+                    <div class="delivery-icon">📞</div>
+                    <h3>客服热线</h3>
+                    <p>每日8:00-20:00<br>15703070844</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><img src="/static/images/小凤桶装水-logo.svg" alt="小凤桶装水" style="height:36px;vertical-align:middle;margin-right:8px;">关于小凤</h4>
+                <p>小凤桶装水经营部，专注为北碚区蔡家片区居民提供桶装水配送服务。</p>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <a href="tel:15703070844">📞 15703070844</a>
+                <p>📍 重庆市两江新区蔡家岗街道同泰三路92号北碚区光瑞·万和世家A区(同泰三路)</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <a href="#home">关于我们</a>
+                <a href="#report">检测报告</a>
+                <a href="#gallery">产品展示</a>
+                <a href="#order">电话订购</a>
+                <a href="#delivery">配送服务</a>
+            </div>
+            <div class="footer-section">
+                <h4>关注我们</h4>
+                <p>电话咨询更便捷</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 小凤桶装水经营部 版权所有</p>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">✕</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+        <div class="lightbox-img-wrap">
+            <img id="lightboxImg" src="" alt="现场照片">
+            <div class="lightbox-counter" id="lightboxCounter"></div>
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+    </div>
+
+    <script>
+        // Gallery images data
+        const galleryImages = [
+            {src:'/static/images/gallery/2026-05-18-产品实拍.jpg',date:'2026-05-18',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-05-18-产品PDF.png',date:'2026-05-18',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-090134-891.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-090237-038.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-090311-771.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-090348-886.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-092114-497.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-092153-221.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-092232-918.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-06-092248-992.png',date:'2026-03-06',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-094341-815.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-094817-058.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-094949-728.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095130-486.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095148-482.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095232-952.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095247-209.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095315-539.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095359-592.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095422-129.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095437-644.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095536-639.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095556-159.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095622-439.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095651-610.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095730-025.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095826-218.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095903-953.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-095925-818.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-100029-991.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-100213-491.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-100224-143.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-100249-098.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-100430-873.png',date:'2026-03-10',cat:'chunjing'},
+            {src:'/static/images/gallery/2026-03-10-100500-321.png',date:'2026-03-10',cat:'chunjing'},
+        ];
+
+        let filteredImages = [...galleryImages];
+        let currentIndex = 0;
+
+        function renderGallery(images) {
+            const container = document.getElementById('galleryGrid');
+            const activeFilter = document.querySelector('.gallery-nav-btn.active').dataset.filter;
+            const catNames = {
+                'kuangwuzhi': '矿物质水',
+                'tianran': '天然水',
+                'chunjing': '纯净水',
+                'baozhuang': '包装饮用水',
+                'pingzhuang': '瓶装水',
+                'yinliao': '饮料'
+            };
+
+            if (images.length === 0) {
+                const catName = catNames[activeFilter] || '该分类';
+                container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
+                    <div style="font-size:3rem;margin-bottom:1rem;opacity:0.3;">📋</div>
+                    <h3 style="color:var(--text-dim);font-size:1.2rem;margin-bottom:1rem;">${catName}产品图即将上线</h3>
+                    <p style="color:var(--text-dim);font-size:0.95rem;">请电话咨询 <a href="tel:15703070844" style="color:var(--primary);font-weight:600;text-decoration:none;">157-0307-0844</a> 了解更多产品信息</p>
+                </div>`;
+                return;
+            }
+
+            let headerHtml = '';
+            if (activeFilter !== 'all') {
+                const catName = catNames[activeFilter] || '';
+                headerHtml = `<div style="grid-column:1/-1;margin-bottom:0.5rem;">
+                    <h3 style="font-size:1.2rem;color:var(--primary);font-weight:600;">${catName}</h3>
+                </div>`;
+            }
+
+            container.innerHTML = headerHtml + images.map((img, idx) => {
+                const globalIdx = galleryImages.indexOf(img);
+                return `<div class="gallery-item" data-index="${globalIdx}" onclick="openLightbox(${globalIdx})">
+                    <img src="${img.src}" loading="lazy" alt="产品照片">
+                    <div class="img-index">${globalIdx + 1}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function updateLightboxCounter() {
+            const counter = document.getElementById('lightboxCounter');
+            counter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const img = document.getElementById('lightboxImg');
+            img.src = galleryImages[currentIndex].src;
+            updateLightboxCounter();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            currentIndex = (currentIndex + direction + galleryImages.length) % galleryImages.length;
+            const img = document.getElementById('lightboxImg');
+            img.src = galleryImages[currentIndex].src;
+            updateLightboxCounter();
+        }
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxPrev').addEventListener('click', () => navigateLightbox(-1));
+        document.getElementById('lightboxNext').addEventListener('click', () => navigateLightbox(1));
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        // Gallery filter
+        document.querySelectorAll('.gallery-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.gallery-nav-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.dataset.filter;
+                if (filter === 'all') {
+                    filteredImages = [...galleryImages];
+                } else {
+                    filteredImages = galleryImages.filter(img => img.cat === filter);
+                }
+                renderGallery(filteredImages);
+            });
+        });
+
+        // 首次渲染
+        renderGallery(galleryImages);
+
+        /* ========== PDF.js 在线查看器 ========== */
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let pdfViewerLoaded = false;
+        let pdfDoc = null;
+        let pdfCurrentPage = 1;
+        let pdfScale = 1.2;
+
+        function createPdfViewer() {
+            if (pdfViewerLoaded) return;
+            pdfViewerLoaded = true;
+
+            const pdfUrl = '/static/pdf/小凤桶装水检测报告.pdf';
+            const canvas = document.getElementById('pdfCanvas');
+            const ctx = canvas.getContext('2d');
+            const loading = document.getElementById('pdfLoading');
+
+            const pageInput = document.getElementById('pdfPageInput');
+            const pageCount = document.getElementById('pdfPageCount');
+            const prevBtn = document.getElementById('pdfPrev');
+            const nextBtn = document.getElementById('pdfNext');
+            const zoomIn = document.getElementById('pdfZoomIn');
+            const zoomOut = document.getElementById('pdfZoomOut');
+            const zoomLabel = document.getElementById('pdfZoomLabel');
+            const fitBtn = document.getElementById('pdfFitPage');
+            const wrap = document.getElementById('pdfCanvasWrap');
+
+            function calcFitScale(page) {
+                const wrapW = wrap.clientWidth - 48;
+                const wrapH = wrap.clientHeight - 48;
+                const vp = page.getViewport({ scale: 1 });
+                return Math.min(wrapW / vp.width, wrapH / vp.height, 2.5);
+            }
+
+            function renderPage() {
+                if (!pdfDoc) return;
+                pdfDoc.getPage(pdfCurrentPage).then(function(pg) {
+                    const viewport = pg.getViewport({ scale: pdfScale });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    canvas.style.display = 'block';
+                    loading.style.display = 'none';
+                    pg.render({ canvasContext: ctx, viewport: viewport });
+                    pageInput.value = pdfCurrentPage;
+                    prevBtn.disabled = pdfCurrentPage <= 1;
+                    nextBtn.disabled = pdfCurrentPage >= pdfDoc.numPages;
+                });
+            }
+
+            function goToPage(n) {
+                if (!pdfDoc) return;
+                pdfCurrentPage = Math.max(1, Math.min(n, pdfDoc.numPages));
+                renderPage();
+            }
+
+            function changeZoom(delta) {
+                if (!pdfDoc) return;
+                pdfScale = Math.max(0.3, Math.min(4, pdfScale + delta));
+                zoomLabel.textContent = Math.round(pdfScale * 100) + '%';
+                renderPage();
+            }
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                pdfDoc = pdf;
+                pageCount.textContent = pdf.numPages;
+                pdfScale = calcFitScale(pdf.getPage(1));
+                zoomLabel.textContent = Math.round(pdfScale * 100) + '%';
+                renderPage();
+            }).catch(function() {
+                loading.innerHTML = '<span style="color:rgba(255,100,100,0.7)">❌ 报告加载失败，请重试</span>';
+            });
+
+            prevBtn.addEventListener('click', () => goToPage(pdfCurrentPage - 1));
+            nextBtn.addEventListener('click', () => goToPage(pdfCurrentPage + 1));
+            pageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const n = parseInt(this.value);
+                    if (!isNaN(n)) goToPage(n);
+                    else this.value = pdfCurrentPage;
+                }
+            });
+            zoomIn.addEventListener('click', () => changeZoom(0.2));
+            zoomOut.addEventListener('click', () => changeZoom(-0.2));
+            fitBtn.addEventListener('click', function() {
+                if (!pdfDoc) return;
+                pdfDoc.getPage(pdfCurrentPage).then(function(pg) {
+                    pdfScale = calcFitScale(pg);
+                    zoomLabel.textContent = Math.round(pdfScale * 100) + '%';
+                    renderPage();
+                });
+            });
+            wrap.addEventListener('wheel', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    changeZoom(e.deltaY > 0 ? -0.15 : 0.15);
+                }
+            });
+        }
+
+        function openReportOverlay() {
+            const overlay = document.getElementById('reportOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            createPdfViewer();
+        }
+
+        function closeReportOverlay() {
+            const overlay = document.getElementById('reportOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('reportOverlay').addEventListener('click', function(e) {
+            if (e.target === this || e.target.classList.contains('report-overlay-body') || e.target.classList.contains('pdf-canvas-wrap')) {
+                closeReportOverlay();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('reportOverlay').classList.contains('active')) {
+                closeReportOverlay();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

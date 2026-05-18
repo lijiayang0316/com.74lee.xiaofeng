@@ -36,6 +36,8 @@ EOF
 
 sudo systemctl daemon-reload
 sudo systemctl enable $SERVICE_NAME
+sudo systemctl stop $SERVICE_NAME 2>/dev/null || true
+sudo fuser -k ${PORT}/tcp 2>/dev/null || true
 sudo systemctl restart $SERVICE_NAME
 
 # 配置 Nginx
@@ -57,6 +59,8 @@ sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
 sudo nginx -t
 if sudo systemctl is-active --quiet nginx; then
     sudo systemctl reload nginx
+elif pgrep -x nginx >/dev/null; then
+    sudo nginx -s reload
 else
     sudo systemctl start nginx
 fi
